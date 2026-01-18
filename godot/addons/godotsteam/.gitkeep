@@ -1,0 +1,8 @@
+# GodotSteam GDExtension
+# Download from: https://godotsteam.com/
+#
+# Installation:
+# 1. Download the GodotSteam GDExtension for your platform
+# 2. Extract contents to this directory
+# 3. Copy steam_api.dll / libsteam_api.so / libsteam_api.dylib to godot/ directory
+# 4. Create steam_appid.txt with your App ID in the godot/ directory

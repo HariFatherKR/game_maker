@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "language": "English",
+    "code": "en",
+    "version": "1.0.0"
+  },
+  "ui": {
+    "buttons": {
+      "play": "Play",
+      "continue": "Continue",
+      "settings": "Settings",
+      "quit": "Quit",
+      "back": "Back",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "claim": "Claim",
+      "skip": "Skip",
+      "reroll": "Reroll"
+    },
+    "tabs": {
+      "farm": "Farm",
+      "augments": "Augments",
+      "shop": "Shop",
+      "meta": "Meta"
+    },
+    "labels": {
+      "day": "Day {0}",
+      "level": "Level {0}",
+      "gold": "Gold",
+      "gems": "Gems",
+      "seeds": "Seeds"
+    }
+  },
+  "farm": {
+    "plot": {
+      "empty": "Empty",
+      "locked": "Locked",
+      "ready": "Ready!",
+      "growing": "Growing...",
+      "harvest": "Harvest",
+      "plant": "Plant",
+      "unlock": "Unlock ({0} Gold)"
+    },
+    "messages": {
+      "planted": "Planted {0}!",
+      "harvested": "Harvested {0} for {1} Gold!",
+      "not_enough_seeds": "Not enough seeds!",
+      "not_enough_gold": "Not enough gold!"
+    }
+  },
+  "crops": {
+    "wheat": {
+      "name": "Wheat",
+      "description": "Basic grain crop. Quick to grow."
+    },
+    "carrot": {
+      "name": "Carrot",
+      "description": "Crunchy orange vegetable."
+    },
+    "potato": {
+      "name": "Potato",
+      "description": "Versatile root vegetable."
+    },
+    "tomato": {
+      "name": "Tomato",
+      "description": "Juicy red fruit. Wait, is it a vegetable?"
+    },
+    "corn": {
+      "name": "Corn",
+      "description": "Tall stalks with golden kernels."
+    },
+    "pumpkin": {
+      "name": "Pumpkin",
+      "description": "Large orange gourd. Great for pies!"
+    }
+  },
+  "augments": {
+    "selection": {
+      "title": "Choose an Augment",
+      "subtitle": "Pick one to add to your run"
+    },
+    "categories": {
+      "growth": "Growth",
+      "yield": "Yield",
+      "economy": "Economy",
+      "automation": "Automation",
+      "special": "Special"
+    },
+    "rarity": {
+      "common": "Common",
+      "uncommon": "Uncommon",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary"
+    }
+  },
+  "offline": {
+    "title": "Welcome Back!",
+    "subtitle": "You were away for {0}",
+    "rewards": "While you were gone:",
+    "gold_earned": "+{0} Gold",
+    "crops_grown": "{0} crops continued growing"
+  },
+  "achievements": {
+    "FIRST_HARVEST": {
+      "name": "First Harvest",
+      "description": "Harvest your first crop"
+    },
+    "HUNDRED_HARVESTS": {
+      "name": "Seasoned Farmer",
+      "description": "Harvest 100 crops"
+    },
+    "THOUSAND_GOLD": {
+      "name": "Wealthy Farmer",
+      "description": "Earn 1000 gold"
+    }
+  },
+  "errors": {
+    "save_failed": "Failed to save game. Please try again.",
+    "load_failed": "Failed to load game. Starting fresh.",
+    "connection_lost": "Connection lost. Reconnecting..."
+  }
+}

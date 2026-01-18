@@ -1,0 +1,147 @@
+[gd_scene load_steps=2 format=3 uid="uid://main_scene"]
+
+[ext_resource type="Script" path="res://scripts/core/main.gd" id="1_main"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18, 0.22, 0.16, 1)
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="HUD" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="HBoxContainer" parent="UILayer/HUD"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_constants/separation = 20
+
+[node name="GoldContainer" type="HBoxContainer" parent="UILayer/HUD/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GoldIcon" type="TextureRect" parent="UILayer/HUD/TopBar/GoldContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="GoldLabel" type="Label" parent="UILayer/HUD/TopBar/GoldContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Gold: 100"
+
+[node name="GemsContainer" type="HBoxContainer" parent="UILayer/HUD/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GemsIcon" type="TextureRect" parent="UILayer/HUD/TopBar/GemsContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="GemsLabel" type="Label" parent="UILayer/HUD/TopBar/GemsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Gems: 0"
+
+[node name="SeedsContainer" type="HBoxContainer" parent="UILayer/HUD/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SeedsIcon" type="TextureRect" parent="UILayer/HUD/TopBar/SeedsContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="SeedsLabel" type="Label" parent="UILayer/HUD/TopBar/SeedsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Seeds: 10"
+
+[node name="Spacer" type="Control" parent="UILayer/HUD/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DayLabel" type="Label" parent="UILayer/HUD/TopBar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Day 1"
+
+[node name="BottomBar" type="HBoxContainer" parent="UILayer/HUD"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="FarmButton" type="Button" parent="UILayer/HUD/BottomBar"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+text = "Farm"
+
+[node name="AugmentsButton" type="Button" parent="UILayer/HUD/BottomBar"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+text = "Augments"
+
+[node name="ShopButton" type="Button" parent="UILayer/HUD/BottomBar"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+text = "Shop"
+
+[node name="SettingsButton" type="Button" parent="UILayer/HUD/BottomBar"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+text = "Settings"
+
+[node name="GameContainer" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 130.0
+offset_bottom = -90.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FarmView" type="Control" parent="GameContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FarmGrid" type="GridContainer" parent="GameContainer/FarmView"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 3

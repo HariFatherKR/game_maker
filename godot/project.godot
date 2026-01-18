@@ -12,7 +12,7 @@ config_version=5
 
 config/name="IdleFarm Roguelike"
 config/description="Idle farming game with roguelite augment system"
-config/version="0.1.0"
+config/version="0.2.0"
 run/main_scene="res://scenes/main/main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://assets/sprites/icon.svg"
@@ -27,6 +27,10 @@ PlatformBridge="*res://scripts/autoload/platform_bridge.gd"
 RunManager="*res://scripts/autoload/run_manager.gd"
 AugmentManager="*res://scripts/roguelike/augment_manager.gd"
 FarmManager="*res://scripts/farm/farm_manager.gd"
+AchievementTracker="*res://scripts/platform/achievement_tracker.gd"
+ThreatManager="*res://scripts/threats/threat_manager.gd"
+PetManager="*res://scripts/pets/pet_manager.gd"
+TutorialManager="*res://scripts/story/tutorial_manager.gd"
 
 [display]
 

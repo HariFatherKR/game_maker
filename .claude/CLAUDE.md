@@ -74,18 +74,22 @@ game_maker/
 
 ## 핵심 파일 설명
 
-### Autoload 싱글톤 (godot/scripts/autoload/)
+### Autoload 싱글톤 (godot/scripts/)
 
 | 파일 | 역할 |
 |------|------|
-| `event_bus.gd` | 시그널 중앙화, 느슨한 결합 |
-| `game_manager.gd` | 게임 전역 상태, 게임 루프, 재화 관리 |
-| `save_manager.gd` | 세이브/로드, AES-256 암호화, 버전 마이그레이션 |
-| `time_manager.gd` | 게임 시간, 일일 사이클, 오프라인 보상 계산 |
-| `platform_bridge.gd` | Steam/Mobile API 추상화 레이어 |
-| `run_manager.gd` | 런 생명주기, 시즌 전환, 증강체 제공 |
-| `augment_manager.gd` | 증강체 풀 관리, 시너지 계산, 스탯 적용 |
-| `farm_manager.gd` | 농지 등록/해금, 대량 작업, 자동화 |
+| `autoload/event_bus.gd` | 시그널 중앙화, 느슨한 결합 |
+| `autoload/game_manager.gd` | 게임 전역 상태, 게임 루프, 재화 관리 |
+| `autoload/save_manager.gd` | 세이브/로드, AES-256 암호화, 버전 마이그레이션 |
+| `autoload/time_manager.gd` | 게임 시간, 일일 사이클, 오프라인 보상 계산 |
+| `autoload/platform_bridge.gd` | Steam/Mobile API 추상화 레이어 |
+| `autoload/run_manager.gd` | 런 생명주기, 시즌 전환, 증강체 제공 |
+| `roguelike/augment_manager.gd` | 증강체 풀 관리, 시너지 계산, 스탯 적용 |
+| `farm/farm_manager.gd` | 농지 등록/해금, 대량 작업, 자동화 |
+| `platform/achievement_tracker.gd` | Steam 업적 추적 및 자동 해금 |
+| `threats/threat_manager.gd` | 해충/재해 스폰 및 효과 관리 |
+| `pets/pet_manager.gd` | 펫 해금, 능력, 패시브 효과 |
+| `story/tutorial_manager.gd` | 튜토리얼 및 스토리 이벤트 |
 
 ### 게임 시스템 (godot/scripts/)
 
@@ -94,6 +98,11 @@ game_maker/
 | `farm/` | 농지, 작물, 수확, 자동화 시스템 |
 | `roguelike/` | 증강체, 런, 메타 진행도, 시너지 |
 | `core/` | GameData, 재화, 인벤토리, 스탯 시스템 |
+| `threats/` | 해충, 재해 위협 시스템 |
+| `pets/` | 펫 시스템 |
+| `story/` | 스토리, 대화, 튜토리얼 |
+| `platform/` | Steam, 모바일 플랫폼 연동 |
+| `ui/` | UI 컴포넌트 |
 
 ### 구현 완료 시스템
 
@@ -107,6 +116,12 @@ game_maker/
 | 증강체 데이터베이스 | ✅ | 17개 증강체 (Common~Legendary) |
 | 작물 데이터베이스 | ✅ | 12개 작물 (Common~Legendary) |
 | UI 시스템 | ✅ | HUD, 런 정보 패널, 증강체 선택 팝업, 토스트 알림 |
+| AchievementTracker | ✅ | Steam 업적 15개 자동 추적/해금 |
+| ThreatManager | ✅ | 해충 5종, 재해 5종, 시즌별 위협 |
+| PetManager | ✅ | 펫 5종, 능력, 패시브 보너스 |
+| TutorialManager | ✅ | 튜토리얼 9단계, 스토리 이벤트 |
+| StoryData | ✅ | 캐릭터 9명, 프롤로그, 신 조우 대화 |
+| DialogueBox | ✅ | 타이핑 효과, 선택지, 자동 진행 |
 
 ---
 

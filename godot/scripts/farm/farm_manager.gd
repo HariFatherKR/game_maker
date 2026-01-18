@@ -5,6 +5,20 @@ class_name FarmManagerClass
 ## 모든 농지와 작물을 중앙에서 관리합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const FarmPlotClass := preload("res://scripts/farm/farm_plot.gd")
+const CropDatabaseScript := preload("res://scripts/farm/crop_database.gd")
+
+var _crop_db_instance = null
+
+func _get_crop_db():
+	if _crop_db_instance == null:
+		_crop_db_instance = CropDatabaseScript.new()
+	return _crop_db_instance
+
+# =============================================================================
 # 상수
 # =============================================================================
 
@@ -27,7 +41,7 @@ const PLOT_UNLOCK_COSTS: Array[int] = [
 # =============================================================================
 
 ## 농지 목록 (런타임에 UI에서 등록)
-var plots: Array[FarmPlot] = []
+var plots: Array = []
 
 ## 자동 수확 활성화 여부
 var auto_harvest_enabled: bool = false
@@ -52,14 +66,14 @@ func _ready() -> void:
 # =============================================================================
 
 ## 농지 등록
-func register_plot(plot: FarmPlot) -> void:
+func register_plot(plot) -> void:
 	if not plots.has(plot):
 		plots.append(plot)
 		print("[FarmManager] Registered plot %d" % plot.plot_id)
 
 
 ## 농지 해제
-func unregister_plot(plot: FarmPlot) -> void:
+func unregister_plot(plot) -> void:
 	plots.erase(plot)
 
 
@@ -107,7 +121,7 @@ func harvest_all() -> int:
 	var total_harvested := 0
 
 	for plot in plots:
-		if plot.state == FarmPlot.PlotState.READY:
+		if plot.state == FarmPlotClass.PlotState.READY:
 			total_harvested += plot.harvest()
 
 	if total_harvested > 0:
@@ -119,7 +133,7 @@ func harvest_all() -> int:
 
 ## 모든 빈 농지에 작물 심기
 func plant_all(crop_id: String) -> int:
-	var crop := CropDatabaseClass.get_crop(crop_id)
+	var crop = _get_crop_db().get_crop(crop_id)
 	if crop == null:
 		push_error("[FarmManager] Unknown crop: %s" % crop_id)
 		return 0
@@ -127,7 +141,7 @@ func plant_all(crop_id: String) -> int:
 	var total_planted := 0
 
 	for plot in plots:
-		if plot.state == FarmPlot.PlotState.EMPTY:
+		if plot.state == FarmPlotClass.PlotState.EMPTY:
 			if plot.plant_crop(crop):
 				total_planted += 1
 
@@ -139,7 +153,7 @@ func plant_all(crop_id: String) -> int:
 func _get_ready_plot_ids() -> Array[int]:
 	var result: Array[int] = []
 	for plot in plots:
-		if plot.state == FarmPlot.PlotState.READY:
+		if plot.state == FarmPlotClass.PlotState.READY:
 			result.append(plot.plot_id)
 	return result
 
@@ -161,7 +175,7 @@ func toggle_auto_plant() -> void:
 
 ## 자동 심기 작물 설정
 func set_auto_plant_crop(crop_id: String) -> void:
-	if CropDatabaseClass.has_crop(crop_id):
+	if _get_crop_db().has_crop(crop_id):
 		auto_plant_crop_id = crop_id
 		print("[FarmManager] Auto plant crop set to: %s" % crop_id)
 
@@ -178,7 +192,7 @@ func get_unlocked_plot_count() -> int:
 func get_growing_plot_count() -> int:
 	var count := 0
 	for plot in plots:
-		if plot.state in [FarmPlot.PlotState.PLANTED, FarmPlot.PlotState.GROWING]:
+		if plot.state in [FarmPlotClass.PlotState.PLANTED, FarmPlotClass.PlotState.GROWING]:
 			count += 1
 	return count
 
@@ -187,7 +201,7 @@ func get_growing_plot_count() -> int:
 func get_ready_plot_count() -> int:
 	var count := 0
 	for plot in plots:
-		if plot.state == FarmPlot.PlotState.READY:
+		if plot.state == FarmPlotClass.PlotState.READY:
 			count += 1
 	return count
 
@@ -218,8 +232,8 @@ func _on_crop_harvested(_plot_id: int, _crop_type: String, _amount: int) -> void
 	# 자동 심기가 활성화되어 있으면 바로 다시 심기
 	if auto_plant_enabled:
 		for plot in plots:
-			if plot.plot_id == _plot_id and plot.state == FarmPlot.PlotState.EMPTY:
-				var crop := CropDatabaseClass.get_crop(auto_plant_crop_id)
+			if plot.plot_id == _plot_id and plot.state == FarmPlotClass.PlotState.EMPTY:
+				var crop = _get_crop_db().get_crop(auto_plant_crop_id)
 				if crop:
 					plot.plant_crop(crop)
 				break

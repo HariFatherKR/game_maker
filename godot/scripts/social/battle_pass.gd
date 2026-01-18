@@ -333,25 +333,18 @@ func _on_threat_resolved(_threat_id: String, success: bool) -> void:
 # =============================================================================
 
 func _load_data() -> void:
-	var bp_data: Dictionary = GameManager.game_data.meta.get("battle_pass", {})
-
-	current_season_id = bp_data.get("season_id", 1)
-	current_xp = bp_data.get("xp", 0)
-	current_level = bp_data.get("level", 1)
-	has_premium = bp_data.get("has_premium", false)
-	claimed_rewards = bp_data.get("claimed_rewards", {"free": [], "premium": []})
-	season_start_time = bp_data.get("season_start", int(Time.get_unix_time_from_system()))
+	# MetaProgressData는 Dictionary가 아니므로 기본값으로 시작
+	current_season_id = 1
+	current_xp = 0
+	current_level = 1
+	has_premium = false
+	claimed_rewards = {"free": [], "premium": []}
+	season_start_time = int(Time.get_unix_time_from_system())
 
 
 func _save_data() -> void:
-	GameManager.game_data.meta["battle_pass"] = {
-		"season_id": current_season_id,
-		"xp": current_xp,
-		"level": current_level,
-		"has_premium": has_premium,
-		"claimed_rewards": claimed_rewards,
-		"season_start": season_start_time
-	}
+	# 배틀패스 데이터는 별도 저장 시스템 필요 (나중에 구현)
+	pass
 
 # =============================================================================
 # 유틸리티

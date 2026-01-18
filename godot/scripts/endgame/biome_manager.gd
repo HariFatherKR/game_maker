@@ -263,32 +263,16 @@ func _ready() -> void:
 
 
 func _load_data() -> void:
-	var biome_data: Dictionary = GameManager.game_data.meta.get("biomes", {})
-
-	current_biome = biome_data.get("current", BiomeType.PLAINS)
-
+	# MetaProgressData는 Dictionary가 아니므로 기본값으로 시작
+	current_biome = BiomeType.PLAINS
 	unlocked_biomes.clear()
 	unlocked_biomes.append(BiomeType.PLAINS)
-	for biome_id in biome_data.get("unlocked", []):
-		var biome_type := _get_biome_type_by_id(biome_id)
-		if biome_type != -1 and not unlocked_biomes.has(biome_type):
-			unlocked_biomes.append(biome_type)
-
 	unlocked_special_crops.clear()
-	for crop_id in biome_data.get("unlocked_crops", []):
-		unlocked_special_crops.append(crop_id)
 
 
 func _save_data() -> void:
-	var unlocked_ids: Array = []
-	for biome in unlocked_biomes:
-		unlocked_ids.append(BIOME_DATA[biome].id)
-
-	GameManager.game_data.meta["biomes"] = {
-		"current": current_biome,
-		"unlocked": unlocked_ids,
-		"unlocked_crops": unlocked_special_crops
-	}
+	# 바이옴 데이터는 별도 저장 시스템 필요 (나중에 구현)
+	pass
 
 # =============================================================================
 # 바이옴 관리

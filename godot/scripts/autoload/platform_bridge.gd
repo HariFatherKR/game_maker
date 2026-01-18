@@ -169,7 +169,7 @@ func steam_cloud_save(data: Dictionary) -> bool:
 	var json_data := JSON.stringify(data)
 	var bytes := json_data.to_utf8_buffer()
 
-	var success := Steam.fileWrite("cloud_save.json", bytes)
+	var success = Steam.fileWrite("cloud_save.json", bytes)
 	if success:
 		print("[PlatformBridge] Steam cloud save successful")
 		EventBus.cloud_sync_completed.emit(true)

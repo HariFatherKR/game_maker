@@ -4,6 +4,20 @@ extends Node2D
 ## 게임의 메인 화면을 관리하고, UI와 게임 시스템을 연결합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const FarmPlotClass := preload("res://scripts/farm/farm_plot.gd")
+const AugmentDatabaseScript := preload("res://scripts/roguelike/augment_database.gd")
+
+var _augment_db_instance = null
+
+func _get_augment_db():
+	if _augment_db_instance == null:
+		_augment_db_instance = AugmentDatabaseScript.new()
+	return _augment_db_instance
+
+# =============================================================================
 # 노드 참조
 # =============================================================================
 
@@ -39,7 +53,7 @@ var toast_container: VBoxContainer
 # =============================================================================
 
 var current_view: String = "farm"
-var farm_plots: Array[FarmPlot] = []
+var farm_plots: Array = []
 
 # =============================================================================
 # 라이프사이클
@@ -201,7 +215,7 @@ func _show_augment_choices(augment_ids: Array) -> void:
 
 	# 새 선택지 생성
 	for augment_id in augment_ids:
-		var augment := AugmentDatabaseClass.get_augment(augment_id)
+		var augment = _get_augment_db().get_augment(augment_id)
 		if augment == null:
 			continue
 
@@ -217,7 +231,7 @@ func _show_augment_choices(augment_ids: Array) -> void:
 	augment_popup.visible = true
 
 
-func _create_augment_choice_panel(augment: Augment) -> Control:
+func _create_augment_choice_panel(augment) -> Control:
 	var panel := PanelContainer.new()
 	panel.custom_minimum_size = Vector2(220, 280)
 
@@ -351,7 +365,7 @@ func _initialize_farm() -> void:
 	# 농지 생성 (3x3 기본)
 	var total_plots := 9
 	for i in range(total_plots):
-		var plot := _create_farm_plot(i)
+		var plot = _create_farm_plot(i)
 		farm_grid.add_child(plot)
 		farm_plots.append(plot)
 
@@ -360,8 +374,8 @@ func _initialize_farm() -> void:
 		plot.set_unlocked(i < unlocked)
 
 
-func _create_farm_plot(plot_id: int) -> FarmPlot:
-	var plot := FarmPlot.new()
+func _create_farm_plot(plot_id: int):
+	var plot = FarmPlotClass.new()
 	plot.plot_id = plot_id
 	plot.custom_minimum_size = Vector2(120, 120)
 	return plot

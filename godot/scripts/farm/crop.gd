@@ -109,8 +109,9 @@ func to_dict() -> Dictionary:
 
 
 ## 딕셔너리에서 생성
-static func from_dict(data: Dictionary) -> Crop:
-	var crop := Crop.new()
+static func from_dict(data: Dictionary):
+	var script = load("res://scripts/farm/crop.gd")
+	var crop = script.new()
 	crop.id = data.get("id", "")
 	crop.crop_type = data.get("crop_type", "")
 	crop.description = data.get("description", "")

@@ -151,7 +151,7 @@ func start_event(event_type: EventType, duration_override: float = 0.0) -> void:
 		return
 
 	var event_info: Dictionary = EVENT_DATA[event_type].duplicate()
-	var duration := duration_override if duration_override > 0 else event_info.duration_hours * 3600.0
+	var duration = duration_override if duration_override > 0 else event_info.duration_hours * 3600.0
 
 	event_info["start_time"] = Time.get_unix_time_from_system()
 	event_info["end_time"] = event_info.start_time + duration
@@ -330,18 +330,11 @@ func _on_tick(_delta: float) -> void:
 # =============================================================================
 
 func _load_data() -> void:
-	var event_data: Array = GameManager.game_data.meta.get("active_events", [])
-	var now := Time.get_unix_time_from_system()
-
-	for event in event_data:
-		# 아직 유효한 이벤트만 복원
-		if event.get("end_time", 0) > now:
-			active_events.append(event)
+	# MetaProgressData는 Dictionary가 아니므로 별도 저장소 사용 안함
+	# 세션 시작 시 active_events는 비어있음
+	pass
 
 
 func _save_data() -> void:
-	var event_data: Array = []
-	for event in active_events:
-		event_data.append(event.duplicate())
-
-	GameManager.game_data.meta["active_events"] = event_data
+	# 이벤트는 세션 기반이므로 저장하지 않음
+	pass

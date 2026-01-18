@@ -5,6 +5,12 @@ class_name TutorialManagerClass
 ## 신규 플레이어를 위한 튜토리얼 흐름을 관리합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const StoryDataClass := preload("res://scripts/story/story_data.gd")
+
+# =============================================================================
 # 시그널
 # =============================================================================
 
@@ -89,7 +95,7 @@ func advance_tutorial() -> void:
 
 	_current_step_index += 1
 
-	if _current_step_index >= StoryData.TUTORIAL_STEPS.size():
+	if _current_step_index >= StoryDataClass.TUTORIAL_STEPS.size():
 		complete_tutorial()
 	else:
 		_show_current_step()
@@ -124,8 +130,8 @@ func skip_tutorial() -> void:
 
 ## 현재 튜토리얼 단계 가져오기
 func get_current_step() -> Dictionary:
-	if _current_step_index < StoryData.TUTORIAL_STEPS.size():
-		return StoryData.TUTORIAL_STEPS[_current_step_index]
+	if _current_step_index < StoryDataClass.TUTORIAL_STEPS.size():
+		return StoryDataClass.TUTORIAL_STEPS[_current_step_index]
 	return {}
 
 
@@ -146,7 +152,7 @@ func start_dialogue(sequence_id: String) -> void:
 	if _is_dialogue_active:
 		return
 
-	_current_dialogue = StoryData.get_dialogue_sequence(sequence_id)
+	_current_dialogue = StoryDataClass.get_dialogue_sequence(sequence_id)
 	if _current_dialogue.is_empty():
 		push_warning("[TutorialManager] Unknown dialogue: %s" % sequence_id)
 		return

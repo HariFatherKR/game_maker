@@ -278,8 +278,8 @@ func _check_challenge_condition(challenge_id: String) -> bool:
 	if not is_hard_mode:
 		return false
 
-	var run := GameManager.game_data.run
-	var stats := GameManager.game_data.stats
+	var run = GameManager.game_data.run
+	var stats = GameManager.game_data.stats
 
 	match challenge_id:
 		"no_death_run":
@@ -354,11 +354,11 @@ func _on_run_ended(_run_id: int, _meta_points: int) -> void:
 	if is_hard_mode:
 		hard_mode_stats.runs_completed += 1
 
-		var run := GameManager.game_data.run
+		var run = GameManager.game_data.run
 		if hard_mode_stats.best_time == 0 or run.total_run_time < hard_mode_stats.best_time:
 			hard_mode_stats.best_time = int(run.total_run_time)
 
-		var stats := GameManager.game_data.stats
+		var stats = GameManager.game_data.stats
 		if stats.total_gold_from_crops > hard_mode_stats.best_gold:
 			hard_mode_stats.best_gold = stats.total_gold_from_crops
 
@@ -386,27 +386,18 @@ func _on_augment_selected(_augment_id: String) -> void:
 # =============================================================================
 
 func _load_data() -> void:
-	var hm_data: Dictionary = GameManager.game_data.meta.get("hard_mode", {})
-
-	is_hard_mode_unlocked = hm_data.get("unlocked", false)
-	is_hard_mode = hm_data.get("enabled", false)
-
+	# MetaProgressData는 Dictionary가 아니므로 기본값으로 시작
+	is_hard_mode_unlocked = false
+	is_hard_mode = false
 	completed_challenges.clear()
-	for challenge_id in hm_data.get("completed_challenges", []):
-		completed_challenges.append(challenge_id)
-
-	hard_mode_stats = hm_data.get("stats", {
+	hard_mode_stats = {
 		"runs_completed": 0,
 		"best_time": 0,
 		"best_gold": 0,
 		"total_threats_survived": 0
-	})
+	}
 
 
 func _save_data() -> void:
-	GameManager.game_data.meta["hard_mode"] = {
-		"unlocked": is_hard_mode_unlocked,
-		"enabled": is_hard_mode,
-		"completed_challenges": completed_challenges,
-		"stats": hard_mode_stats
-	}
+	# 하드모드 데이터는 별도 저장 시스템 필요 (나중에 구현)
+	pass

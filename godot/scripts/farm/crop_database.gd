@@ -5,6 +5,12 @@ class_name CropDatabaseClass
 ## 모든 작물 데이터를 관리하는 싱글톤 패턴 클래스입니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const CropScript := preload("res://scripts/farm/crop.gd")
+
+# =============================================================================
 # 작물 데이터
 # =============================================================================
 
@@ -173,7 +179,7 @@ func _load_default_crops() -> void:
 	]
 
 	for data in crops_data:
-		var crop := Crop.from_dict(data)
+		var crop = CropScript.from_dict(data)
 		_crops[crop.id] = crop
 
 	_loaded = true
@@ -184,7 +190,7 @@ func _load_default_crops() -> void:
 # =============================================================================
 
 ## ID로 작물 가져오기
-func get_crop(crop_id: String) -> Crop:
+func get_crop(crop_id: String):
 	if _crops.has(crop_id):
 		return _crops[crop_id]
 
@@ -193,16 +199,16 @@ func get_crop(crop_id: String) -> Crop:
 
 
 ## 모든 작물 가져오기
-func get_all_crops() -> Array[Crop]:
-	var result: Array[Crop] = []
+func get_all_crops() -> Array:
+	var result: Array = []
 	for crop in _crops.values():
 		result.append(crop)
 	return result
 
 
 ## 레어리티별 작물 가져오기
-func get_crops_by_rarity(rarity: int) -> Array[Crop]:
-	var result: Array[Crop] = []
+func get_crops_by_rarity(rarity: int) -> Array:
+	var result: Array = []
 	for crop in _crops.values():
 		if crop.rarity == rarity:
 			result.append(crop)
@@ -210,8 +216,8 @@ func get_crops_by_rarity(rarity: int) -> Array[Crop]:
 
 
 ## 해금된 작물 가져오기 (레벨 기준)
-func get_unlocked_crops(player_level: int) -> Array[Crop]:
-	var result: Array[Crop] = []
+func get_unlocked_crops(player_level: int) -> Array:
+	var result: Array = []
 	for crop in _crops.values():
 		if crop.unlock_level <= player_level:
 			result.append(crop)
@@ -233,11 +239,12 @@ func get_crop_count() -> int:
 # =============================================================================
 
 ## 싱글톤 인스턴스 (스크립트 로드 시 자동 생성)
-static var _instance: CropDatabaseClass = null
+static var _instance = null
 
-static func get_instance() -> CropDatabaseClass:
+static func get_instance():
 	if _instance == null:
-		_instance = CropDatabaseClass.new()
+		var script = load("res://scripts/farm/crop_database.gd")
+		_instance = script.new()
 	return _instance
 
 
@@ -246,5 +253,5 @@ static func get_instance() -> CropDatabaseClass:
 # =============================================================================
 
 ## 정적 메서드로 작물 가져오기
-static func get_crop(crop_id: String) -> Crop:
+static func get_crop_static(crop_id: String):
 	return get_instance().get_crop(crop_id)

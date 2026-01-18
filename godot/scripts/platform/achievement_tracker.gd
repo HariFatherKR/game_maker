@@ -5,6 +5,21 @@ class_name AchievementTrackerClass
 ## 게임 이벤트를 모니터링하고 업적 조건 달성 시 자동으로 해금합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const SteamIntegrationClass := preload("res://scripts/platform/steam_integration.gd")
+const AugmentDatabaseScript := preload("res://scripts/roguelike/augment_database.gd")
+const AugmentClass := preload("res://scripts/roguelike/augment.gd")
+
+var _augment_db_instance = null
+
+func _get_augment_db():
+	if _augment_db_instance == null:
+		_augment_db_instance = AugmentDatabaseScript.new()
+	return _augment_db_instance
+
+# =============================================================================
 # 업적 조건 정의
 # =============================================================================
 
@@ -152,7 +167,7 @@ func _check_stat_achievement(condition: Dictionary) -> bool:
 	var threshold: int = condition.threshold
 
 	var current_value := 0
-	var stats := GameManager.game_data.stats
+	var stats = GameManager.game_data.stats
 
 	match stat_name:
 		"total_crops_harvested":
@@ -172,7 +187,7 @@ func _check_meta_achievement(condition: Dictionary) -> bool:
 	var threshold: int = condition.threshold
 
 	var current_value := 0
-	var meta := GameManager.game_data.meta
+	var meta = GameManager.game_data.meta
 
 	match stat_name:
 		"total_runs":
@@ -190,7 +205,7 @@ func _check_farm_achievement(condition: Dictionary) -> bool:
 	var threshold: int = condition.threshold
 
 	var current_value := 0
-	var farm := GameManager.game_data.farm
+	var farm = GameManager.game_data.farm
 
 	match stat_name:
 		"unlocked_plots":
@@ -204,7 +219,7 @@ func _check_collection_achievement(condition: Dictionary) -> bool:
 	var required_count: int = condition.count
 
 	var current_count := 0
-	var meta := GameManager.game_data.meta
+	var meta = GameManager.game_data.meta
 
 	match collection_name:
 		"unlocked_crops":
@@ -232,8 +247,8 @@ func _unlock_achievement(achievement_id: String) -> void:
 
 
 func _get_achievement_name(achievement_id: String) -> String:
-	if SteamIntegration.ACHIEVEMENTS.has(achievement_id):
-		return SteamIntegration.ACHIEVEMENTS[achievement_id].name
+	if SteamIntegrationClass.ACHIEVEMENTS.has(achievement_id):
+		return SteamIntegrationClass.ACHIEVEMENTS[achievement_id].name
 	return achievement_id
 
 # =============================================================================
@@ -261,8 +276,8 @@ func _on_augment_selected(augment_id: String) -> void:
 	_check_achievement("AUGMENT_COLLECTOR")
 
 	# 레전더리 증강체 체크
-	var augment := AugmentDatabaseClass.get_augment(augment_id)
-	if augment and augment.rarity == Augment.Rarity.LEGENDARY:
+	var augment = _get_augment_db().get_augment(augment_id)
+	if augment and augment.rarity == AugmentClass.Rarity.LEGENDARY:
 		_unlock_achievement("LEGENDARY_AUGMENT")
 
 

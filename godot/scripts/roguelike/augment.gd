@@ -65,10 +65,10 @@ enum EffectType {
 var current_stacks: int = 1
 
 ## 시너지 태그 (같은 태그끼리 시너지)
-@export var synergy_tags: Array[String] = []
+@export var synergy_tags: Array = []
 
 ## 상호 배타적 증강체 ID 목록
-@export var exclusive_with: Array[String] = []
+@export var exclusive_with: Array = []
 
 ## 스프라이트 경로
 @export var sprite_path: String = ""
@@ -149,8 +149,9 @@ func to_dict() -> Dictionary:
 
 
 ## 딕셔너리에서 생성
-static func from_dict(data: Dictionary) -> Augment:
-	var aug := Augment.new()
+static func from_dict(data: Dictionary):
+	var script = load("res://scripts/roguelike/augment.gd")
+	var aug = script.new()
 	aug.id = data.get("id", "")
 	aug.name = data.get("name", "")
 	aug.description = data.get("description", "")
@@ -167,5 +168,5 @@ static func from_dict(data: Dictionary) -> Augment:
 
 
 ## 복제
-func duplicate_augment() -> Augment:
+func duplicate_augment():
 	return from_dict(to_dict())

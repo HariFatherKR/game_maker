@@ -5,6 +5,19 @@ class_name FarmPlot
 ## 농지의 상태를 관리하고 작물을 재배합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const CropDatabaseScript := preload("res://scripts/farm/crop_database.gd")
+
+var _crop_db_instance = null
+
+func _get_crop_db():
+	if _crop_db_instance == null:
+		_crop_db_instance = CropDatabaseScript.new()
+	return _crop_db_instance
+
+# =============================================================================
 # 시그널
 # =============================================================================
 
@@ -49,7 +62,7 @@ var state: PlotState = PlotState.EMPTY
 var is_unlocked: bool = false
 
 ## 현재 작물
-var current_crop: Crop = null
+var current_crop = null
 
 ## 성장률 (0.0 ~ 1.0)
 var growth_progress: float = 0.0
@@ -125,7 +138,7 @@ func set_unlocked(unlocked: bool) -> void:
 
 
 ## 작물 심기
-func plant_crop(crop: Crop) -> bool:
+func plant_crop(crop) -> bool:
 	if state != PlotState.EMPTY:
 		return false
 
@@ -228,7 +241,7 @@ func load_save_data(data: Dictionary) -> void:
 
 	var crop_type: String = data.get("crop", "")
 	if crop_type != "":
-		current_crop = CropDatabaseClass.get_crop(crop_type)
+		current_crop = _get_crop_db().get_crop(crop_type)
 
 	state = data.get("state", PlotState.LOCKED if not is_unlocked else PlotState.EMPTY)
 	_update_visual()
@@ -242,7 +255,7 @@ func _calculate_growth_rate() -> float:
 	if current_crop == null:
 		return 0.0
 
-	var base_rate := 1.0 / current_crop.grow_time
+	var base_rate = 1.0 / current_crop.grow_time
 	var augment_bonus := _get_augment_growth_bonus()
 
 	return base_rate * (1.0 + augment_bonus)
@@ -253,7 +266,7 @@ func _calculate_yield() -> int:
 	if current_crop == null:
 		return 0
 
-	var base_yield := current_crop.base_yield
+	var base_yield = current_crop.base_yield
 	var augment_bonus := _get_augment_yield_bonus()
 
 	return int(base_yield * (1.0 + augment_bonus))
@@ -334,7 +347,7 @@ func _on_pressed() -> void:
 	match state:
 		PlotState.EMPTY:
 			# 기본 작물 심기 (임시)
-			var wheat := CropDatabaseClass.get_crop("wheat")
+			var wheat = _get_crop_db().get_crop("wheat")
 			if wheat:
 				plant_crop(wheat)
 		PlotState.READY:

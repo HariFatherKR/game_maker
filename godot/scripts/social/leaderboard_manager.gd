@@ -190,8 +190,8 @@ func _upload_local_score(leaderboard_type: LeaderboardType, score: int) -> void:
 
 ## 런 종료 시 점수 업로드
 func _on_run_ended(run_id: int, meta_points: int) -> void:
-	var run_data := GameManager.game_data.run
-	var stats := GameManager.game_data.stats
+	var run_data = GameManager.game_data.run
+	var stats = GameManager.game_data.stats
 
 	# 최고 런 점수
 	var run_score := _calculate_run_score()
@@ -220,8 +220,8 @@ func _on_crop_harvested(_plot_id: int, _crop_type: String, _amount: int) -> void
 
 ## 런 점수 계산
 func _calculate_run_score() -> int:
-	var stats := GameManager.game_data.stats
-	var run := GameManager.game_data.run
+	var stats = GameManager.game_data.stats
+	var run = GameManager.game_data.run
 
 	var score := 0
 

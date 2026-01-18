@@ -5,6 +5,12 @@ class_name ThreatManagerClass
 ## 해충, 재해 등 농장에 대한 위협을 관리합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const FarmPlotClass := preload("res://scripts/farm/farm_plot.gd")
+
+# =============================================================================
 # 상수
 # =============================================================================
 
@@ -431,7 +437,7 @@ func is_plot_disabled(plot_id: int) -> bool:
 func _get_occupied_plots() -> Array[int]:
 	var result: Array[int] = []
 	for plot in FarmManager.plots:
-		if plot.state in [FarmPlot.PlotState.PLANTED, FarmPlot.PlotState.GROWING]:
+		if plot.state in [FarmPlotClass.PlotState.PLANTED, FarmPlotClass.PlotState.GROWING]:
 			result.append(plot.plot_id)
 	return result
 

@@ -92,7 +92,7 @@ func _ready() -> void:
 
 
 func _check_daily_reset() -> void:
-	var today := Time.get_date_dict_from_system().day
+	var today = Time.get_date_dict_from_system().day
 	if today != _last_reset_day:
 		daily_gifts_sent = 0
 		_last_reset_day = today
@@ -290,7 +290,7 @@ func get_visit_cooldown(friend_id: String) -> int:
 		return 0
 
 	var now := Time.get_unix_time_from_system()
-	var elapsed := now - _last_visit_times[friend_id]
+	var elapsed = now - _last_visit_times[friend_id]
 	return maxi(0, VISIT_COOLDOWN - int(elapsed))
 
 # =============================================================================
@@ -328,26 +328,10 @@ func _load_dummy_friends() -> void:
 # =============================================================================
 
 func _load_data() -> void:
-	var friend_data: Dictionary = GameManager.game_data.meta.get("friends", {})
-
-	friends = friend_data.get("list", {})
-	pending_gifts.clear()
-	for gift in friend_data.get("pending_gifts", []):
-		pending_gifts.append(gift)
-	daily_gifts_sent = friend_data.get("daily_gifts_sent", 0)
-	_last_visit_times = friend_data.get("visit_times", {})
-	_last_reset_day = friend_data.get("last_reset_day", Time.get_date_dict_from_system().day)
+	# MetaProgressData는 Dictionary가 아니므로 세션 데이터로 시작
+	_last_reset_day = Time.get_date_dict_from_system().day
 
 
 func _save_data() -> void:
-	var pending_array: Array = []
-	for gift in pending_gifts:
-		pending_array.append(gift)
-
-	GameManager.game_data.meta["friends"] = {
-		"list": friends,
-		"pending_gifts": pending_array,
-		"daily_gifts_sent": daily_gifts_sent,
-		"visit_times": _last_visit_times,
-		"last_reset_day": _last_reset_day
-	}
+	# 친구 데이터는 별도 저장 시스템 필요 (나중에 구현)
+	pass

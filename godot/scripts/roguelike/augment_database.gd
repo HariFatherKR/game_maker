@@ -5,6 +5,12 @@ class_name AugmentDatabaseClass
 ## 모든 증강체 데이터를 관리합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const AugmentScript := preload("res://scripts/roguelike/augment.gd")
+
+# =============================================================================
 # 변수
 # =============================================================================
 
@@ -29,9 +35,9 @@ func _load_default_augments() -> void:
 			"id": "quick_growth",
 			"name": "Quick Growth",
 			"description": "Crops grow 10% faster.",
-			"rarity": Augment.Rarity.COMMON,
-			"category": Augment.Category.GROWTH,
-			"effect_type": Augment.EffectType.MULTIPLICATIVE,
+			"rarity": AugmentScript.Rarity.COMMON,
+			"category": AugmentScript.Category.GROWTH,
+			"effect_type": AugmentScript.EffectType.MULTIPLICATIVE,
 			"target_stat": "growth_speed",
 			"effect_value": 0.1,
 			"max_stacks": 5,
@@ -41,9 +47,9 @@ func _load_default_augments() -> void:
 			"id": "fertile_soil",
 			"name": "Fertile Soil",
 			"description": "Increase base growth by 5 per tick.",
-			"rarity": Augment.Rarity.COMMON,
-			"category": Augment.Category.GROWTH,
-			"effect_type": Augment.EffectType.ADDITIVE,
+			"rarity": AugmentScript.Rarity.COMMON,
+			"category": AugmentScript.Category.GROWTH,
+			"effect_type": AugmentScript.EffectType.ADDITIVE,
 			"target_stat": "growth_flat",
 			"effect_value": 5.0,
 			"max_stacks": 10,
@@ -55,9 +61,9 @@ func _load_default_augments() -> void:
 			"id": "bountiful_harvest",
 			"name": "Bountiful Harvest",
 			"description": "Increase crop yield by 15%.",
-			"rarity": Augment.Rarity.COMMON,
-			"category": Augment.Category.YIELD,
-			"effect_type": Augment.EffectType.MULTIPLICATIVE,
+			"rarity": AugmentScript.Rarity.COMMON,
+			"category": AugmentScript.Category.YIELD,
+			"effect_type": AugmentScript.EffectType.MULTIPLICATIVE,
 			"target_stat": "yield_bonus",
 			"effect_value": 0.15,
 			"max_stacks": 5,
@@ -69,9 +75,9 @@ func _load_default_augments() -> void:
 			"id": "sunlight_blessing",
 			"name": "Sunlight Blessing",
 			"description": "Crops grow 25% faster during day.",
-			"rarity": Augment.Rarity.UNCOMMON,
-			"category": Augment.Category.GROWTH,
-			"effect_type": Augment.EffectType.MULTIPLICATIVE,
+			"rarity": AugmentScript.Rarity.UNCOMMON,
+			"category": AugmentScript.Category.GROWTH,
+			"effect_type": AugmentScript.EffectType.MULTIPLICATIVE,
 			"target_stat": "day_growth_speed",
 			"effect_value": 0.25,
 			"max_stacks": 3,
@@ -81,9 +87,9 @@ func _load_default_augments() -> void:
 			"id": "moonlight_growth",
 			"name": "Moonlight Growth",
 			"description": "Crops continue to grow at full speed when offline.",
-			"rarity": Augment.Rarity.UNCOMMON,
-			"category": Augment.Category.GROWTH,
-			"effect_type": Augment.EffectType.MULTIPLICATIVE,
+			"rarity": AugmentScript.Rarity.UNCOMMON,
+			"category": AugmentScript.Category.GROWTH,
+			"effect_type": AugmentScript.EffectType.MULTIPLICATIVE,
 			"target_stat": "offline_efficiency",
 			"effect_value": 0.5,
 			"max_stacks": 2,
@@ -95,9 +101,9 @@ func _load_default_augments() -> void:
 			"id": "merchant_friend",
 			"name": "Merchant's Friend",
 			"description": "Sell crops for 20% more gold.",
-			"rarity": Augment.Rarity.UNCOMMON,
-			"category": Augment.Category.ECONOMY,
-			"effect_type": Augment.EffectType.MULTIPLICATIVE,
+			"rarity": AugmentScript.Rarity.UNCOMMON,
+			"category": AugmentScript.Category.ECONOMY,
+			"effect_type": AugmentScript.EffectType.MULTIPLICATIVE,
 			"target_stat": "sell_price",
 			"effect_value": 0.2,
 			"max_stacks": 3,
@@ -107,9 +113,9 @@ func _load_default_augments() -> void:
 			"id": "bargain_hunter",
 			"name": "Bargain Hunter",
 			"description": "Seeds cost 15% less.",
-			"rarity": Augment.Rarity.UNCOMMON,
-			"category": Augment.Category.ECONOMY,
-			"effect_type": Augment.EffectType.MULTIPLICATIVE,
+			"rarity": AugmentScript.Rarity.UNCOMMON,
+			"category": AugmentScript.Category.ECONOMY,
+			"effect_type": AugmentScript.EffectType.MULTIPLICATIVE,
 			"target_stat": "seed_cost",
 			"effect_value": -0.15,
 			"max_stacks": 4,
@@ -121,9 +127,9 @@ func _load_default_augments() -> void:
 			"id": "auto_harvester",
 			"name": "Auto Harvester",
 			"description": "Automatically harvest ready crops.",
-			"rarity": Augment.Rarity.RARE,
-			"category": Augment.Category.AUTOMATION,
-			"effect_type": Augment.EffectType.SPECIAL,
+			"rarity": AugmentScript.Rarity.RARE,
+			"category": AugmentScript.Category.AUTOMATION,
+			"effect_type": AugmentScript.EffectType.SPECIAL,
 			"target_stat": "auto_harvest",
 			"effect_value": 1.0,
 			"max_stacks": 1,
@@ -133,9 +139,9 @@ func _load_default_augments() -> void:
 			"id": "auto_planter",
 			"name": "Auto Planter",
 			"description": "Automatically replant after harvest.",
-			"rarity": Augment.Rarity.RARE,
-			"category": Augment.Category.AUTOMATION,
-			"effect_type": Augment.EffectType.SPECIAL,
+			"rarity": AugmentScript.Rarity.RARE,
+			"category": AugmentScript.Category.AUTOMATION,
+			"effect_type": AugmentScript.EffectType.SPECIAL,
 			"target_stat": "auto_plant",
 			"effect_value": 1.0,
 			"max_stacks": 1,
@@ -147,9 +153,9 @@ func _load_default_augments() -> void:
 			"id": "lucky_clover",
 			"name": "Lucky Clover",
 			"description": "5% chance for double yield.",
-			"rarity": Augment.Rarity.RARE,
-			"category": Augment.Category.SPECIAL,
-			"effect_type": Augment.EffectType.SPECIAL,
+			"rarity": AugmentScript.Rarity.RARE,
+			"category": AugmentScript.Category.SPECIAL,
+			"effect_type": AugmentScript.EffectType.SPECIAL,
 			"target_stat": "double_yield_chance",
 			"effect_value": 0.05,
 			"max_stacks": 4,
@@ -159,9 +165,9 @@ func _load_default_augments() -> void:
 			"id": "time_warp",
 			"name": "Time Warp",
 			"description": "1% chance for instant growth.",
-			"rarity": Augment.Rarity.RARE,
-			"category": Augment.Category.SPECIAL,
-			"effect_type": Augment.EffectType.SPECIAL,
+			"rarity": AugmentScript.Rarity.RARE,
+			"category": AugmentScript.Category.SPECIAL,
+			"effect_type": AugmentScript.EffectType.SPECIAL,
 			"target_stat": "instant_grow_chance",
 			"effect_value": 0.01,
 			"max_stacks": 5,
@@ -173,9 +179,9 @@ func _load_default_augments() -> void:
 			"id": "golden_touch",
 			"name": "Golden Touch",
 			"description": "All gold gains increased by 50%.",
-			"rarity": Augment.Rarity.EPIC,
-			"category": Augment.Category.ECONOMY,
-			"effect_type": Augment.EffectType.MULTIPLICATIVE,
+			"rarity": AugmentScript.Rarity.EPIC,
+			"category": AugmentScript.Category.ECONOMY,
+			"effect_type": AugmentScript.EffectType.MULTIPLICATIVE,
 			"target_stat": "gold_multiplier",
 			"effect_value": 0.5,
 			"max_stacks": 2,
@@ -185,9 +191,9 @@ func _load_default_augments() -> void:
 			"id": "natures_fury",
 			"name": "Nature's Fury",
 			"description": "Growth speed doubled. Yield -20%.",
-			"rarity": Augment.Rarity.EPIC,
-			"category": Augment.Category.GROWTH,
-			"effect_type": Augment.EffectType.SPECIAL,
+			"rarity": AugmentScript.Rarity.EPIC,
+			"category": AugmentScript.Category.GROWTH,
+			"effect_type": AugmentScript.EffectType.SPECIAL,
 			"target_stat": "natures_fury",
 			"effect_value": 1.0,
 			"max_stacks": 1,
@@ -197,9 +203,9 @@ func _load_default_augments() -> void:
 			"id": "harvester_prime",
 			"name": "Harvester Prime",
 			"description": "Auto harvest yields 25% more.",
-			"rarity": Augment.Rarity.EPIC,
-			"category": Augment.Category.AUTOMATION,
-			"effect_type": Augment.EffectType.MULTIPLICATIVE,
+			"rarity": AugmentScript.Rarity.EPIC,
+			"category": AugmentScript.Category.AUTOMATION,
+			"effect_type": AugmentScript.EffectType.MULTIPLICATIVE,
 			"target_stat": "auto_harvest_bonus",
 			"effect_value": 0.25,
 			"max_stacks": 3,
@@ -211,9 +217,9 @@ func _load_default_augments() -> void:
 			"id": "eternal_spring",
 			"name": "Eternal Spring",
 			"description": "All crops grow 100% faster. New plots unlock 50% cheaper.",
-			"rarity": Augment.Rarity.LEGENDARY,
-			"category": Augment.Category.GROWTH,
-			"effect_type": Augment.EffectType.SPECIAL,
+			"rarity": AugmentScript.Rarity.LEGENDARY,
+			"category": AugmentScript.Category.GROWTH,
+			"effect_type": AugmentScript.EffectType.SPECIAL,
 			"target_stat": "eternal_spring",
 			"effect_value": 1.0,
 			"max_stacks": 1,
@@ -223,9 +229,9 @@ func _load_default_augments() -> void:
 			"id": "midas_blessing",
 			"name": "Midas Blessing",
 			"description": "Triple gold from all sources. 10% chance to destroy crop on harvest.",
-			"rarity": Augment.Rarity.LEGENDARY,
-			"category": Augment.Category.ECONOMY,
-			"effect_type": Augment.EffectType.SPECIAL,
+			"rarity": AugmentScript.Rarity.LEGENDARY,
+			"category": AugmentScript.Category.ECONOMY,
+			"effect_type": AugmentScript.EffectType.SPECIAL,
 			"target_stat": "midas_blessing",
 			"effect_value": 1.0,
 			"max_stacks": 1,
@@ -235,9 +241,9 @@ func _load_default_augments() -> void:
 			"id": "void_farmer",
 			"name": "Void Farmer",
 			"description": "Gain a shadow plot that duplicates a random crop's yield each harvest.",
-			"rarity": Augment.Rarity.LEGENDARY,
-			"category": Augment.Category.SPECIAL,
-			"effect_type": Augment.EffectType.SPECIAL,
+			"rarity": AugmentScript.Rarity.LEGENDARY,
+			"category": AugmentScript.Category.SPECIAL,
+			"effect_type": AugmentScript.EffectType.SPECIAL,
 			"target_stat": "void_farmer",
 			"effect_value": 1.0,
 			"max_stacks": 1,
@@ -246,7 +252,7 @@ func _load_default_augments() -> void:
 	]
 
 	for data in augments_data:
-		var aug := Augment.from_dict(data)
+		var aug = AugmentScript.from_dict(data)
 		_augments[aug.id] = aug
 
 	_loaded = true
@@ -256,30 +262,30 @@ func _load_default_augments() -> void:
 # 공개 API
 # =============================================================================
 
-func get_augment(augment_id: String) -> Augment:
+func get_augment(augment_id: String):
 	if _augments.has(augment_id):
 		return _augments[augment_id].duplicate_augment()
 	push_warning("[AugmentDatabase] Augment not found: %s" % augment_id)
 	return null
 
 
-func get_all_augments() -> Array[Augment]:
-	var result: Array[Augment] = []
+func get_all_augments() -> Array:
+	var result: Array = []
 	for aug in _augments.values():
 		result.append(aug)
 	return result
 
 
-func get_augments_by_rarity(rarity: Augment.Rarity) -> Array[Augment]:
-	var result: Array[Augment] = []
+func get_augments_by_rarity(rarity: int) -> Array:
+	var result: Array = []
 	for aug in _augments.values():
 		if aug.rarity == rarity:
 			result.append(aug)
 	return result
 
 
-func get_augments_by_category(category: Augment.Category) -> Array[Augment]:
-	var result: Array[Augment] = []
+func get_augments_by_category(category: int) -> Array:
+	var result: Array = []
 	for aug in _augments.values():
 		if aug.category == category:
 			result.append(aug)
@@ -293,13 +299,14 @@ func has_augment(augment_id: String) -> bool:
 # 싱글톤
 # =============================================================================
 
-static var _instance: AugmentDatabaseClass = null
+static var _instance = null
 
-static func get_instance() -> AugmentDatabaseClass:
+static func get_instance():
 	if _instance == null:
-		_instance = AugmentDatabaseClass.new()
+		var script = load("res://scripts/roguelike/augment_database.gd")
+		_instance = script.new()
 	return _instance
 
 
-static func get_augment(augment_id: String) -> Augment:
+static func get_augment_static(augment_id: String):
 	return get_instance().get_augment(augment_id)

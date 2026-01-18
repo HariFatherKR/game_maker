@@ -5,6 +5,12 @@ extends Node
 ## 모든 게임 시스템의 중앙 허브 역할을 합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const GameDataClass := preload("res://scripts/core/game_data.gd")
+
+# =============================================================================
 # 상수
 # =============================================================================
 
@@ -33,7 +39,7 @@ var current_state: GameState = GameState.INITIALIZING
 var is_first_launch: bool = true
 
 ## 게임 데이터 (타입 안전한 클래스)
-var game_data: GameData = GameData.new()
+var game_data = GameDataClass.new()
 
 # =============================================================================
 # 내부 변수
@@ -103,7 +109,7 @@ func _initialize_game() -> void:
 
 	# SaveManager를 통해 세이브 데이터 로드 시도
 	if SaveManager.has_save():
-		var loaded_data := SaveManager.load_game()
+		var loaded_data = SaveManager.load_game()
 		if loaded_data != null:
 			game_data = loaded_data
 			is_first_launch = false
@@ -130,14 +136,14 @@ func _initialize_game() -> void:
 
 
 func _setup_new_game() -> void:
-	game_data = GameData.new()
+	game_data = GameDataClass.new()
 
 	# 시작 농지 설정 (메타 업그레이드 적용)
-	var starting_plots := 1 + game_data.meta.get_upgrade_level("starting_plots")
+	var starting_plots: int = 1 + game_data.meta.get_upgrade_level("starting_plots")
 	game_data.farm.unlocked_plots = starting_plots
 
 	# 시작 골드 (메타 업그레이드 적용)
-	var starting_gold := 100 + (game_data.meta.get_upgrade_level("starting_gold") * 100)
+	var starting_gold: int = 100 + (game_data.meta.get_upgrade_level("starting_gold") * 100)
 	game_data.currencies.gold = starting_gold
 
 # =============================================================================
@@ -202,9 +208,9 @@ func request_save() -> void:
 
 ## 재화 획득
 func add_currency(currency_type: String, amount: int) -> void:
-	var old_amount := game_data.currencies.get_amount(currency_type)
+	var old_amount: int = game_data.currencies.get_amount(currency_type)
 	game_data.currencies.add(currency_type, amount)
-	var new_amount := game_data.currencies.get_amount(currency_type)
+	var new_amount: int = game_data.currencies.get_amount(currency_type)
 
 	EventBus.currency_changed.emit(currency_type, old_amount, new_amount)
 
@@ -214,12 +220,12 @@ func add_currency(currency_type: String, amount: int) -> void:
 
 ## 재화 소비
 func spend_currency(currency_type: String, amount: int) -> bool:
-	var old_amount := game_data.currencies.get_amount(currency_type)
+	var old_amount: int = game_data.currencies.get_amount(currency_type)
 
 	if not game_data.currencies.spend(currency_type, amount):
 		return false
 
-	var new_amount := game_data.currencies.get_amount(currency_type)
+	var new_amount: int = game_data.currencies.get_amount(currency_type)
 	EventBus.currency_changed.emit(currency_type, old_amount, new_amount)
 	return true
 
@@ -234,14 +240,14 @@ func get_currency(currency_type: String) -> int:
 
 ## 메타 업그레이드 구매
 func purchase_meta_upgrade(upgrade_id: String) -> bool:
-	var current_level := game_data.meta.get_upgrade_level(upgrade_id)
-	var max_level := get_meta_upgrade_max_level(upgrade_id)
+	var current_level: int = game_data.meta.get_upgrade_level(upgrade_id)
+	var max_level: int = get_meta_upgrade_max_level(upgrade_id)
 
 	if current_level >= max_level:
 		print("[GameManager] Upgrade %s already at max level" % upgrade_id)
 		return false
 
-	var cost := get_meta_upgrade_cost(upgrade_id, current_level + 1)
+	var cost: int = get_meta_upgrade_cost(upgrade_id, current_level + 1)
 
 	if not spend_currency("meta_points", cost):
 		print("[GameManager] Not enough meta points for %s" % upgrade_id)
@@ -255,7 +261,7 @@ func purchase_meta_upgrade(upgrade_id: String) -> bool:
 ## 메타 업그레이드 비용
 func get_meta_upgrade_cost(upgrade_id: String, level: int) -> int:
 	# 기본 비용 + 레벨별 증가
-	var base_costs := {
+	var base_costs: Dictionary = {
 		"starting_plots": 50,
 		"base_growth_rate": 30,
 		"starting_gold": 25,
@@ -264,13 +270,13 @@ func get_meta_upgrade_cost(upgrade_id: String, level: int) -> int:
 		"offline_efficiency": 60,
 	}
 
-	var base := base_costs.get(upgrade_id, 50)
+	var base: int = base_costs.get(upgrade_id, 50)
 	return base * level
 
 
 ## 메타 업그레이드 최대 레벨
 func get_meta_upgrade_max_level(upgrade_id: String) -> int:
-	var max_levels := {
+	var max_levels: Dictionary = {
 		"starting_plots": 5,
 		"base_growth_rate": 10,
 		"starting_gold": 10,
@@ -278,7 +284,7 @@ func get_meta_upgrade_max_level(upgrade_id: String) -> int:
 		"rare_crop_chance": 10,
 		"offline_efficiency": 5,
 	}
-	return max_levels.get(upgrade_id, 10)
+	return int(max_levels.get(upgrade_id, 10))
 
 # =============================================================================
 # 스탯 계산 헬퍼

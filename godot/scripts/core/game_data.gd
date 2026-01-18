@@ -57,8 +57,9 @@ func to_dict() -> Dictionary:
 	}
 
 
-static func from_dict(data: Dictionary) -> GameData:
-	var result := GameData.new()
+static func from_dict(data: Dictionary):
+	var script = load("res://scripts/core/game_data.gd")
+	var result = script.new()
 
 	result.version = data.get("version", CURRENT_VERSION)
 	result.last_save_time = data.get("last_save_time", 0)

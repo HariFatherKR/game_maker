@@ -5,6 +5,12 @@ extends Node
 ## 로컬 저장, 암호화, 클라우드 동기화를 지원합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const GameDataClass := preload("res://scripts/core/game_data.gd")
+
+# =============================================================================
 # 상수
 # =============================================================================
 
@@ -39,7 +45,7 @@ func has_save() -> bool:
 
 
 ## 게임 저장
-func save_game(data: GameData) -> bool:
+func save_game(data) -> bool:
 	if _is_saving:
 		push_warning("[SaveManager] Already saving")
 		return false
@@ -71,7 +77,7 @@ func save_game(data: GameData) -> bool:
 
 
 ## 게임 로드
-func load_game() -> GameData:
+func load_game():
 	if _is_loading:
 		push_warning("[SaveManager] Already loading")
 		return null
@@ -98,10 +104,10 @@ func load_game() -> GameData:
 	save_data = _migrate_save(save_data)
 
 	# GameData 클래스로 변환
-	var game_data: GameData = null
+	var game_data = null
 
 	if save_data.has("game_data"):
-		game_data = GameData.from_dict(save_data.game_data)
+		game_data = GameDataClass.from_dict(save_data.game_data)
 	else:
 		push_error("[SaveManager] Invalid save data format")
 		_is_loading = false
@@ -136,7 +142,7 @@ func get_last_save_time() -> int:
 # =============================================================================
 
 ## 저장할 데이터 준비
-func _prepare_save_data(data: GameData) -> Dictionary:
+func _prepare_save_data(data) -> Dictionary:
 	data.last_save_time = Time.get_unix_time_from_system()
 
 	return {
@@ -359,7 +365,7 @@ func _simple_decrypt(data: PackedByteArray) -> String:
 
 
 ## 클라우드 동기화
-func _sync_to_cloud(data: GameData) -> void:
+func _sync_to_cloud(data) -> void:
 	if PlatformBridge.is_steam():
 		PlatformBridge.steam_cloud_save(data.to_dict())
 	elif PlatformBridge.is_mobile():

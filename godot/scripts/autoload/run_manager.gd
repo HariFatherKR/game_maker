@@ -39,7 +39,7 @@ signal season_warning(seconds_remaining: float)
 # =============================================================================
 
 var current_state: RunState = RunState.IDLE
-var run_data: GameData.RunData:
+var run_data:
 	get:
 		return GameManager.game_data.run
 
@@ -355,7 +355,7 @@ func _evaluate_run() -> Dictionary:
 
 
 func _update_meta_progress(result: Dictionary) -> void:
-	var meta := GameManager.game_data.meta
+	var meta = GameManager.game_data.meta
 
 	# 누적 통계 업데이트
 	meta.total_runs += 1

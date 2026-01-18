@@ -5,6 +5,21 @@ class_name AugmentManagerClass
 ## 증강체 선택, 적용, 시너지 계산을 관리합니다.
 
 # =============================================================================
+# 클래스 프리로드
+# =============================================================================
+
+const AugmentClass := preload("res://scripts/roguelike/augment.gd")
+const AugmentDatabaseScript := preload("res://scripts/roguelike/augment_database.gd")
+
+# 싱글톤 인스턴스
+var _augment_db_instance = null
+
+func _get_augment_db():
+	if _augment_db_instance == null:
+		_augment_db_instance = AugmentDatabaseScript.new()
+	return _augment_db_instance
+
+# =============================================================================
 # 상수
 # =============================================================================
 
@@ -139,8 +154,8 @@ func _ready() -> void:
 
 func _load_unlocked_augments() -> void:
 	# 기본 해금 증강체 (Common 전부)
-	var db := AugmentDatabaseClass.get_instance()
-	for aug in db.get_augments_by_rarity(Augment.Rarity.COMMON):
+	var db = _get_augment_db()
+	for aug in db.get_augments_by_rarity(AugmentClass.Rarity.COMMON):
 		if not unlocked_augment_ids.has(aug.id):
 			unlocked_augment_ids.append(aug.id)
 
@@ -161,7 +176,7 @@ func start_run() -> void:
 
 ## 런 종료 시 정리
 func end_run() -> void:
-	var active_count := GameManager.game_data.run.active_augments.size()
+	var active_count = GameManager.game_data.run.active_augments.size()
 	print("[AugmentManager] Run ended with %d augments" % active_count)
 	_active_stats.clear()
 	_active_synergies.clear()
@@ -189,7 +204,7 @@ func generate_choices(count: int = AUGMENT_CHOICES) -> Array[String]:
 			available.erase(selected)
 
 			# 상호 배타적 증강체 제거
-			var augment := AugmentDatabaseClass.get_augment(selected)
+			var augment = _get_augment_db().get_augment(selected)
 			if augment and augment.exclusive_with.size() > 0:
 				for exclusive_id in augment.exclusive_with:
 					available.erase(exclusive_id)
@@ -199,7 +214,7 @@ func generate_choices(count: int = AUGMENT_CHOICES) -> Array[String]:
 
 ## 증강체 적용
 func apply_augment(augment_id: String) -> bool:
-	var augment := AugmentDatabaseClass.get_augment(augment_id)
+	var augment = _get_augment_db().get_augment(augment_id)
 	if augment == null:
 		push_error("[AugmentManager] Unknown augment: %s" % augment_id)
 		return false
@@ -219,29 +234,29 @@ func apply_augment(augment_id: String) -> bool:
 
 
 ## 카테고리를 신으로 변환
-func _category_to_god(category: Augment.Category) -> String:
+func _category_to_god(category: AugmentClass.Category) -> String:
 	match category:
-		Augment.Category.GROWTH: return "ceres"
-		Augment.Category.ECONOMY: return "plutus"
-		Augment.Category.AUTOMATION: return "chronos"
-		Augment.Category.SPECIAL: return "tyche"
-		Augment.Category.YIELD: return "hephaestus"
+		AugmentClass.Category.GROWTH: return "ceres"
+		AugmentClass.Category.ECONOMY: return "plutus"
+		AugmentClass.Category.AUTOMATION: return "chronos"
+		AugmentClass.Category.SPECIAL: return "tyche"
+		AugmentClass.Category.YIELD: return "hephaestus"
 	return "ceres"
 
 
 ## Augment 효과 적용
-func _apply_augment_effects(augment: Augment) -> void:
-	var stat_name := augment.target_stat
-	var value := augment.effect_value
+func _apply_augment_effects(augment) -> void:
+	var stat_name = augment.target_stat
+	var value = augment.effect_value
 
 	match augment.effect_type:
-		Augment.EffectType.MULTIPLICATIVE:
-			var current := _active_stats.get(stat_name, 1.0)
+		AugmentClass.EffectType.MULTIPLICATIVE:
+			var current = _active_stats.get(stat_name, 1.0)
 			_active_stats[stat_name] = current * (1.0 + value)
-		Augment.EffectType.ADDITIVE:
-			var current := _active_stats.get(stat_name, 0.0)
+		AugmentClass.EffectType.ADDITIVE:
+			var current = _active_stats.get(stat_name, 0.0)
 			_active_stats[stat_name] = current + value
-		Augment.EffectType.SPECIAL:
+		AugmentClass.EffectType.SPECIAL:
 			# 특수 효과는 1.0으로 활성화 표시
 			_active_stats[stat_name] = value
 
@@ -296,7 +311,7 @@ func check_synergies() -> void:
 	if not GameManager.game_data.run.is_active:
 		return
 
-	var active_augments := GameManager.game_data.run.active_augments
+	var active_augments = GameManager.game_data.run.active_augments
 
 	for synergy_id in SYNERGIES:
 		if _active_synergies.has(synergy_id):
@@ -315,7 +330,7 @@ func check_synergies() -> void:
 func _count_augments_by_god(augments: Array, god: GodType) -> int:
 	var count := 0
 	for augment_id in augments:
-		var augment := AugmentDatabaseClass.get_augment(augment_id)
+		var augment = _get_augment_db().get_augment(augment_id)
 		if augment == null:
 			continue
 		# 카테고리를 신으로 변환하여 비교
@@ -326,13 +341,13 @@ func _count_augments_by_god(augments: Array, god: GodType) -> int:
 
 
 ## 카테고리를 GodType으로 변환
-func _category_to_god_type(category: Augment.Category) -> GodType:
+func _category_to_god_type(category: AugmentClass.Category) -> GodType:
 	match category:
-		Augment.Category.GROWTH: return GodType.CERES
-		Augment.Category.ECONOMY: return GodType.PLUTUS
-		Augment.Category.AUTOMATION: return GodType.CHRONOS
-		Augment.Category.SPECIAL: return GodType.TYCHE
-		Augment.Category.YIELD: return GodType.HEPHAESTUS
+		AugmentClass.Category.GROWTH: return GodType.CERES
+		AugmentClass.Category.ECONOMY: return GodType.PLUTUS
+		AugmentClass.Category.AUTOMATION: return GodType.CHRONOS
+		AugmentClass.Category.SPECIAL: return GodType.TYCHE
+		AugmentClass.Category.YIELD: return GodType.HEPHAESTUS
 	return GodType.CERES
 
 
@@ -370,15 +385,15 @@ func get_active_synergies() -> Array[String]:
 ## 사용 가능한 증강체 풀 (ID -> 가중치)
 func _get_available_pool() -> Dictionary:
 	var pool := {}
-	var active_augments := GameManager.game_data.run.active_augments
+	var active_augments = GameManager.game_data.run.active_augments
 
 	for aug_id in unlocked_augment_ids:
-		var augment := AugmentDatabaseClass.get_augment(aug_id)
+		var augment = _get_augment_db().get_augment(aug_id)
 		if augment == null:
 			continue
 
 		# 최대 스택 체크
-		var current_count := active_augments.count(aug_id)
+		var current_count = active_augments.count(aug_id)
 		if current_count >= augment.max_stacks:
 			continue
 
@@ -391,7 +406,7 @@ func _get_available_pool() -> Dictionary:
 
 		# 신 호감도 보너스 (카테고리 기반)
 		var god_name := _category_to_god(augment.category)
-		var affinity := GameManager.game_data.meta.get_god_affinity(god_name)
+		var affinity = GameManager.game_data.meta.get_god_affinity(god_name)
 		weight *= 1.0 + (affinity * 0.1)
 
 		pool[aug_id] = weight
@@ -399,7 +414,7 @@ func _get_available_pool() -> Dictionary:
 	return pool
 
 
-func _has_prerequisites(augment: Augment, active_augments: Array) -> bool:
+func _has_prerequisites(augment, active_augments: Array) -> bool:
 	# 기존 Augment 클래스는 prerequisites가 없으므로 항상 true
 	return true
 
@@ -442,7 +457,7 @@ func unlock_augment(augment_id: String) -> bool:
 	if unlocked_augment_ids.has(augment_id):
 		return false
 
-	var augment := AugmentDatabaseClass.get_augment(augment_id)
+	var augment = _get_augment_db().get_augment(augment_id)
 	if augment == null:
 		push_error("[AugmentManager] Unknown augment: %s" % augment_id)
 		return false
